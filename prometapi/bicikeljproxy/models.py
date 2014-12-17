@@ -6,6 +6,7 @@ import sys
 import urllib2
 import foojson
 import json
+import pytz
 
 URL_CARTO = 'http://www.bicikelj.si/service/carto'
 URL_STATION = 'http://www.bicikelj.si/service/stationdetails/ljubljana/%s'
@@ -51,7 +52,9 @@ def fetch_xmls():
 		v['station'] = sta_dict
 		v['station_valid'] = not int(sta_dict['total']) == 0
 	
-	now = datetime.datetime.now()
+	now = datetime.datetime.utcnow()
+        now = now.replace(tzinfo=pytz.utc)
+
 	resp = {
 		'markers': json,
 		'updated': time.mktime(now.timetuple())
